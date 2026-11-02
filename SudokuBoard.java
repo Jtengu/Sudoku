@@ -1,10 +1,11 @@
 // Josh Taing
 // CS 143
-// HW #2: Sudoku #2 (isValid, isSolved - SudokuBoard.java file)
+// HW #3: Sudoku #3 (Solve - SudokuBoard.java file)
 
 // This file will read from a text file numbers and periods, and accurate setup and display those values in a 9x9 sudoku grid.
 // In addition, this file will also check whether all the board entries are valid 1-9 inputs, as well as only having one of each number
 // following traditional sudoku game rules (one instance of 1-9 in each row/column/3x3 grid.
+// #3 Assignment - This commit adds the solve() method to automatically solve the given sudokuboard setup through an iterating value test recursion.
 
 
 import java.util.*;
@@ -214,6 +215,38 @@ public class SudokuBoard {
       }
       
       return result.toString();
+   }
+   
+   // PRE: checks whether the sudokuboard setup isValid() or is already isSolved() before recursively iterating through each 1-9 value to solve the board
+   // POST: returns true once the sudokuboard is solved through an iterating recursive loop, returns false if precondition isValid() was not met, or true if isSolved() was already met
+   public boolean solve() {
+   
+      boolean boardSolved = false;
+      
+      if (!isValid()) {
+         return false;
+         
+      } else if (isSolved()) {
+         return true;
+         
+      } else {
+         for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+               if(board[row][col] == 0) {
+                  for (int x = 1; x <= 9 && !boardSolved; x++) {
+                     board[row][col] = x;
+                     boardSolved = solve();
+                  }
+                  
+                  if (!boardSolved) {
+                     board[row][col] = 0;
+                  }
+               }
+            }
+            
+         }
+      }
+      return boardSolved;
    }
 
 }
